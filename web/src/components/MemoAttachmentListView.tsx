@@ -3,7 +3,7 @@ import { cn } from "@/lib/utils";
 import { Attachment } from "@/types/proto/api/v1/attachment_service";
 import { getAttachmentType, getAttachmentUrl } from "@/utils/attachment";
 import MemoAttachment from "./MemoAttachment";
-import { PreviewImageDialog } from "./PreviewImageDialog";
+import PreviewImageDialog from "./PreviewImageDialog";
 
 const MemoAttachmentListView = ({ attachments = [] }: { attachments: Attachment[] }) => {
   const [previewImage, setPreviewImage] = useState<{ open: boolean; urls: string[]; index: number }>({
@@ -74,7 +74,7 @@ const MemoAttachmentListView = ({ attachments = [] }: { attachments: Attachment[
 
   const MediaList = ({ attachments = [] }: { attachments: Attachment[] }) => {
     const cards = attachments.map((attachment) => (
-      <div key={attachment.name} className="max-w-[70%] grow flex flex-col justify-start items-start shrink-0">
+      <div key={attachment.name} className="max-w-[60%] w-fit flex flex-col justify-start items-start shrink-0">
         <MediaCard className="max-h-64 grow" attachment={attachment} />
       </div>
     ));

@@ -1,18 +1,14 @@
 @import "tailwindcss";
 @import "tw-animate-css";
-@import "./style.css";
-
-@custom-variant dark (&: is(.dark *));
+@import "./themes/default.css";
 
 @theme {
   --default-transition-duration: 150ms;
 }
 
-@variant dark (&:is(.dark *));
-
 @layer base {
   * {
-    @apply border-border outline-ring/50;
+    @apply border-border outline-none ring-0;
   }
   body {
     @apply bg-background text-foreground;

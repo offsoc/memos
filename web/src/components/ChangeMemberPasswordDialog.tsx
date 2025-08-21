@@ -1,28 +1,24 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { toast } from "react-hot-toast";
 import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogFooter, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { userStore } from "@/store/v2";
+import { userStore } from "@/store";
 import { User } from "@/types/proto/api/v1/user_service";
 import { useTranslate } from "@/utils/i18n";
 
-interface ChangeMemberPasswordDialogProps {
+interface Props {
   open: boolean;
   onOpenChange: (open: boolean) => void;
   user?: User;
   onSuccess?: () => void;
 }
 
-export function ChangeMemberPasswordDialog({ open, onOpenChange, user, onSuccess }: ChangeMemberPasswordDialogProps) {
+function ChangeMemberPasswordDialog({ open, onOpenChange, user, onSuccess }: Props) {
   const t = useTranslate();
   const [newPassword, setNewPassword] = useState("");
   const [newPasswordAgain, setNewPasswordAgain] = useState("");
-
-  useEffect(() => {
-    // do nth
-  }, []);
 
   const handleCloseBtnClick = () => {
     onOpenChange(false);

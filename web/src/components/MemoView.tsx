@@ -7,7 +7,7 @@ import useAsyncEffect from "@/hooks/useAsyncEffect";
 import useCurrentUser from "@/hooks/useCurrentUser";
 import useNavigateTo from "@/hooks/useNavigateTo";
 import { cn } from "@/lib/utils";
-import { memoStore, userStore, workspaceStore } from "@/store/v2";
+import { memoStore, userStore, workspaceStore } from "@/store";
 import { State } from "@/types/proto/api/v1/common";
 import { Memo, MemoRelation_Type, Visibility } from "@/types/proto/api/v1/memo_service";
 import { useTranslate } from "@/utils/i18n";
@@ -20,7 +20,7 @@ import MemoEditor from "./MemoEditor";
 import MemoLocationView from "./MemoLocationView";
 import MemoReactionistView from "./MemoReactionListView";
 import MemoRelationListView from "./MemoRelationListView";
-import { PreviewImageDialog } from "./PreviewImageDialog";
+import PreviewImageDialog from "./PreviewImageDialog";
 import ReactionSelector from "./ReactionSelector";
 import UserAvatar from "./UserAvatar";
 import VisibilityIcon from "./VisibilityIcon";
@@ -136,7 +136,7 @@ const MemoView: React.FC<Props> = observer((props: Props) => {
   ) : (
     <div
       className={cn(
-        "group relative flex flex-col justify-start items-start w-full px-4 py-3 mb-2 gap-2 bg-card text-card-foreground rounded-lg border border-border transition-colors",
+        "group relative flex flex-col justify-start items-start bg-card w-full px-4 py-3 mb-2 gap-2 text-card-foreground rounded-lg border border-border transition-colors",
         className,
       )}
     >
@@ -190,7 +190,7 @@ const MemoView: React.FC<Props> = observer((props: Props) => {
             )}
             {currentUser && !isArchived && <ReactionSelector className="border-none w-auto h-auto" memo={memo} />}
           </div>
-          {!isInMemoDetailPage && (workspaceMemoRelatedSetting.enableComment || commentAmount > 0) && (
+          {!isInMemoDetailPage && commentAmount > 0 && (
             <Link
               className={cn(
                 "flex flex-row justify-start items-center rounded-md p-1 hover:opacity-80",

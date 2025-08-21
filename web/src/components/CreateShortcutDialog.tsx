@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { toast } from "react-hot-toast";
 import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogFooter, DialogHeader, DialogTitle } from "@/components/ui/dialog";
@@ -8,18 +8,18 @@ import { Textarea } from "@/components/ui/textarea";
 import { shortcutServiceClient } from "@/grpcweb";
 import useCurrentUser from "@/hooks/useCurrentUser";
 import useLoading from "@/hooks/useLoading";
-import { userStore } from "@/store/v2";
+import { userStore } from "@/store";
 import { Shortcut } from "@/types/proto/api/v1/shortcut_service";
 import { useTranslate } from "@/utils/i18n";
 
-interface CreateShortcutDialogProps {
+interface Props {
   open: boolean;
   onOpenChange: (open: boolean) => void;
   shortcut?: Shortcut;
   onSuccess?: () => void;
 }
 
-export function CreateShortcutDialog({ open, onOpenChange, shortcut: initialShortcut, onSuccess }: CreateShortcutDialogProps) {
+function CreateShortcutDialog({ open, onOpenChange, shortcut: initialShortcut, onSuccess }: Props) {
   const t = useTranslate();
   const user = useCurrentUser();
   const [shortcut, setShortcut] = useState<Shortcut>({
@@ -29,6 +29,18 @@ export function CreateShortcutDialog({ open, onOpenChange, shortcut: initialShor
   });
   const requestState = useLoading(false);
   const isCreating = !initialShortcut;
+
+  useEffect(() => {
+    if (initialShortcut) {
+      setShortcut({
+        name: initialShortcut.name,
+        title: initialShortcut.title,
+        filter: initialShortcut.filter,
+      });
+    } else {
+      setShortcut({ name: "", title: "", filter: "" });
+    }
+  }, [initialShortcut]);
 
   const onShortcutTitleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setShortcut({ ...shortcut, title: e.target.value });
@@ -67,7 +79,7 @@ export function CreateShortcutDialog({ open, onOpenChange, shortcut: initialShor
         toast.success("Update shortcut successfully");
       }
       // Refresh shortcuts.
-      await userStore.fetchShortcuts();
+      await userStore.fetchUserSettings();
       requestState.setFinish();
       onSuccess?.();
       onOpenChange(false);

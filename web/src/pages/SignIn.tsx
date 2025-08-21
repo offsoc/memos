@@ -10,8 +10,8 @@ import { identityProviderServiceClient } from "@/grpcweb";
 import { absolutifyLink } from "@/helpers/utils";
 import useCurrentUser from "@/hooks/useCurrentUser";
 import { Routes } from "@/router";
+import { workspaceStore } from "@/store";
 import { extractIdentityProviderIdFromName } from "@/store/common";
-import { workspaceStore } from "@/store/v2";
 import { IdentityProvider, IdentityProvider_Type } from "@/types/proto/api/v1/idp_service";
 import { useTranslate } from "@/utils/i18n";
 
@@ -48,7 +48,7 @@ const SignIn = observer(() => {
       }
       const authUrl = `${oauth2Config.authUrl}?client_id=${
         oauth2Config.clientId
-      }&redirect_uri=${redirectUri}&state=${stateQueryParameter}&response_type=code&scope=${encodeURIComponent(
+      }&redirect_uri=${encodeURIComponent(redirectUri)}&state=${stateQueryParameter}&response_type=code&scope=${encodeURIComponent(
         oauth2Config.scopes.join(" "),
       )}`;
       window.location.href = authUrl;

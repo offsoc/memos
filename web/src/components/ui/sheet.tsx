@@ -4,7 +4,8 @@ import * as React from "react";
 import { cn } from "@/lib/utils";
 
 const Sheet = React.forwardRef<React.ElementRef<typeof SheetPrimitive.Root>, React.ComponentPropsWithoutRef<typeof SheetPrimitive.Root>>(
-  ({ ...props }) => {
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  ({ ...props }, _ref) => {
     return <SheetPrimitive.Root data-slot="sheet" {...props} />;
   },
 );
@@ -71,10 +72,17 @@ const SheetContent = React.forwardRef<
             "data-[state=closed]:slide-out-to-bottom data-[state=open]:slide-in-from-bottom inset-x-0 bottom-0 h-auto border-t",
           className,
         )}
+        onOpenAutoFocus={(e) => {
+          e.preventDefault();
+        }}
+        onCloseAutoFocus={(e) => {
+          e.preventDefault();
+          document.body.style.pointerEvents = "auto";
+        }}
         {...props}
       >
         {children}
-        <SheetPrimitive.Close className="ring-offset-background focus:ring-ring data-[state=open]:bg-secondary absolute top-4 right-4 rounded-xs opacity-60 transition-opacity hover:opacity-100 focus:ring-2 focus:ring-offset-2 focus:outline-hidden disabled:pointer-events-none">
+        <SheetPrimitive.Close className="ring-offset-background data-[state=open]:bg-secondary absolute top-4 right-4 rounded-xs opacity-60 transition-opacity hover:opacity-100 focus:ring-2 focus:ring-offset-2 focus:outline-hidden disabled:pointer-events-none">
           <XIcon className="size-5" />
           <span className="sr-only">Close</span>
         </SheetPrimitive.Close>

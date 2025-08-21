@@ -7,7 +7,7 @@ import { Button } from "@/components/ui/button";
 import { DEFAULT_LIST_MEMOS_PAGE_SIZE } from "@/helpers/consts";
 import useResponsiveWidth from "@/hooks/useResponsiveWidth";
 import { Routes } from "@/router";
-import { memoStore, viewStore } from "@/store/v2";
+import { memoStore, viewStore } from "@/store";
 import { State } from "@/types/proto/api/v1/common";
 import { Memo } from "@/types/proto/api/v1/memo_service";
 import { useTranslate } from "@/utils/i18n";
@@ -18,11 +18,9 @@ import MemoEditor from "../MemoEditor";
 interface Props {
   renderer: (memo: Memo) => JSX.Element;
   listSort?: (list: Memo[]) => Memo[];
-  owner?: string;
   state?: State;
   orderBy?: string;
   filter?: string;
-  oldFilter?: string;
   pageSize?: number;
 }
 
@@ -49,11 +47,9 @@ const PagedMemoList = observer((props: Props) => {
 
     try {
       const response = await memoStore.fetchMemos({
-        parent: props.owner || "",
         state: props.state || State.NORMAL,
         orderBy: props.orderBy || "display_time desc",
-        filter: props.filter || "",
-        oldFilter: props.oldFilter || "",
+        filter: props.filter,
         pageSize: props.pageSize || DEFAULT_LIST_MEMOS_PAGE_SIZE,
         pageToken,
       });
@@ -103,7 +99,7 @@ const PagedMemoList = observer((props: Props) => {
   // Initial load and reload when props change
   useEffect(() => {
     refreshList();
-  }, [props.owner, props.state, props.orderBy, props.filter, props.oldFilter, props.pageSize]);
+  }, [props.state, props.orderBy, props.filter, props.pageSize]);
 
   // Auto-fetch more content when list changes and page isn't full
   useEffect(() => {
